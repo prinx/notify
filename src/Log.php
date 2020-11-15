@@ -89,10 +89,12 @@ class Log
      * it will be converted to string
      * Else, the message will be print with print_r.
      *
-     * @param  string              $level
-     * @param  string|array|object $message
-     * @param  const               $flag
+     * @param string              $level
+     * @param string|array|object $message
+     * @param const               $flag
+     *
      * @throws \Exception
+     *
      * @return void
      */
     public function log(string $level, $message, $flag = FILE_APPEND)

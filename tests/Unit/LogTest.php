@@ -65,7 +65,7 @@ class LogTest extends TestCase
         $alphabetLength = strlen($alphabet) - 1;
         $string = '';
 
-        for ($i = 0; $i < $length; ++$i) {
+        for ($i = 0; $i < $length; $i++) {
             $string .= $alphabet[random_int(0, $alphabetLength)];
         }
 
