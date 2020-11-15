@@ -12,9 +12,7 @@
 namespace Prinx\Notify;
 
 /**
- * Default logger.
- *
- * Simply log into the application.
+ * Simple Log.
  */
 class Log
 {
@@ -33,9 +31,7 @@ class Log
 
     public function __construct($file = '', $cache = '')
     {
-        // File will be created on the first logging attempt
-        $this->file = $file;
-        $this->cache = $cache ?: ".{$file}-logcount.cache";
+        $this->setFile($file, $cache);
 
         if (!file_exists($this->cache)) {
             file_put_contents($this->cache, 0);
@@ -91,12 +87,10 @@ class Log
      * it will be converted to string
      * Else, the message will be print with print_r.
      *
-     * @param string              $level
-     * @param string|array|object $message
-     * @param const               $flag
-     *
+     * @param  string              $level
+     * @param  string|array|object $message
+     * @param  const               $flag
      * @throws \Exception
-     *
      * @return void
      */
     public function log(string $level, $message, $flag = FILE_APPEND)
@@ -127,5 +121,30 @@ class Log
     {
         file_put_contents($this->file, '');
         file_put_contents($this->cache, 0);
+    }
+
+    public function setFile($file, $cache = '')
+    {
+        $this->file = $file;
+        $this->setCache($cache, $file);
+
+        return $this;
+    }
+
+    public function setCache($cache, $logFile = '')
+    {
+        $this->cache = $cache ?: "{$logFile}.count";
+
+        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function getCache()
+    {
+        return $this->cache;
     }
 }
