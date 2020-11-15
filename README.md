@@ -72,4 +72,4 @@ Apart from that, feel free to create a pull request with a new functionality to 
 
 ## Licence
 
-MIT
+[MIT](LICENSE)
