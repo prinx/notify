@@ -31,10 +31,12 @@ class Log
 
     public function __construct($file = '', $cache = '')
     {
-        $this->setFile($file, $cache);
+        if ($file) {
+            $this->setFile($file, $cache);
+        }
 
-        if (!file_exists($this->cache)) {
-            file_put_contents($this->cache, 0);
+        if ($cache) {
+            $this->setCache($cache);
         }
     }
 
@@ -87,12 +89,10 @@ class Log
      * it will be converted to string
      * Else, the message will be print with print_r.
      *
-     * @param string              $level
-     * @param string|array|object $message
-     * @param const               $flag
-     *
+     * @param  string              $level
+     * @param  string|array|object $message
+     * @param  const               $flag
      * @throws \Exception
-     *
      * @return void
      */
     public function log(string $level, $message, $flag = FILE_APPEND)
@@ -111,7 +111,7 @@ class Log
             $toLog = print_r($message, true);
         }
 
-        $num = intval(file_get_contents($this->cache)) + 1;
+        $num = $this->count();
 
         $toLog = '#'.$num.' ['.strtoupper($level).'] ['.date('D, d m Y, H:i:s')."]\n".$toLog."\n\n";
 
@@ -125,17 +125,41 @@ class Log
         file_put_contents($this->cache, 0);
     }
 
+    public function remove()
+    {
+        unlink($this->file);
+        unlink($this->cache);
+
+        @rmdir(dirname($this->cache));
+        @rmdir(dirname($this->file));
+    }
+
     public function setFile($file, $cache = '')
     {
-        $this->file = $file;
-        $this->setCache($cache, $file);
+        if (empty($file)) {
+            throw new \RuntimeException('Invalid path for log.');
+        }
+
+        $this->file = $file ? $file : $this->file;
+
+        $this->ensureFileExists($this->file);
+
+        $this->setCache($cache, $this->file);
 
         return $this;
     }
 
     public function setCache($cache, $logFile = '')
     {
-        $this->cache = $cache ?: "{$logFile}.count";
+        if (empty($cache) && empty($logFile)) {
+            throw new \RuntimeException('Invalid path for cache.');
+        }
+
+        $this->cache = ($cache ? $cache : dirname($logFile).'/cache/.'.basename($logFile).'.count') ?: $this->cache;
+
+        if ($this->cache) {
+            $this->ensureFileExists($this->cache, 0);
+        }
 
         return $this;
     }
@@ -148,5 +172,21 @@ class Log
     public function getCache()
     {
         return $this->cache;
+    }
+
+    public function ensureFileExists($file, $defaultValue = '')
+    {
+        if (!file_exists($file)) {
+            if (!file_exists(dirname($file))) {
+                mkdir(dirname($file), 0755, true);
+            }
+
+            file_put_contents($file, $defaultValue);
+        }
+    }
+
+    public function count()
+    {
+        return intval(file_get_contents($this->cache)) + 1;
     }
 }
