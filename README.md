@@ -75,7 +75,7 @@ $logger->info('User logged in')
 ## Running tests
 
 ```shell
-php vendor/bin/phpunit
+vendor/bin/phpunit
 ```
 
 ## Contribute
