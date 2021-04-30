@@ -1,5 +1,8 @@
-# PHP Notify
+<div style="text-align:center;margin-bottom:20px">
+<h1 style="margin-bottom:0">PHP Notify</h1>
 
+<a href="https://travis-ci.com/prinx/notify"><img src="https://travis-ci.com/prinx/notify.svg?branch=master"></a> <a href="https://travis-ci.com/prinx/notify"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
+</div>
 Simple log package.
 
 ## Installation
@@ -58,10 +61,21 @@ $logger->setFile('path/to/log/file');
 $logger->remove();
 ```
 
+## Fluent interface
+
+The package implements the Fluent interface, allowing you to chain the methods of the logger.
+
+```php
+// Eg:
+$logger->info('User logged in')
+    ->setFile('error.log')
+    ->error('An error happened.');
+```
+
 ## Running tests
 
 ```shell
-php vendor/phpunit/phpunit/phpunit
+php vendor/bin/phpunit
 ```
 
 ## Contribute
