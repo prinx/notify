@@ -119,7 +119,7 @@ class Log
 
         file_put_contents($this->file, $toLog, $flag);
         file_put_contents($this->cache, $num);
-        
+
         return $this;
     }
 
@@ -191,7 +191,7 @@ class Log
 
             file_put_contents($file, $defaultValue);
         }
-        
+
         return $this;
     }
 
