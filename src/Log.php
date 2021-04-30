@@ -42,22 +42,22 @@ class Log
 
     public function debug($message, $flag = FILE_APPEND)
     {
-        $this->log('debug', $message, $flag);
+        return $this->log('debug', $message, $flag);
     }
 
     public function info($message, $flag = FILE_APPEND)
     {
-        $this->log('info', $message, $flag);
+        return $this->log('info', $message, $flag);
     }
 
     public function notice($message, $flag = FILE_APPEND)
     {
-        $this->log('notice', $message, $flag);
+        return $this->log('notice', $message, $flag);
     }
 
     public function warning($message, $flag = FILE_APPEND)
     {
-        $this->log('warning', $message, $flag);
+        return $this->log('warning', $message, $flag);
     }
 
     public function error($message, $flag = FILE_APPEND)
@@ -67,17 +67,17 @@ class Log
 
     public function critical($message, $flag = FILE_APPEND)
     {
-        $this->log('critical', $message, $flag);
+        return $this->log('critical', $message, $flag);
     }
 
     public function alert($message, $flag = FILE_APPEND)
     {
-        $this->log('alert', $message, $flag);
+        return $this->log('alert', $message, $flag);
     }
 
     public function emergency($message, $flag = FILE_APPEND)
     {
-        $this->log('emergency', $message, $flag);
+        return $this->log('emergency', $message, $flag);
     }
 
     /**
@@ -95,7 +95,7 @@ class Log
      *
      * @throws \Exception
      *
-     * @return void
+     * @return $this
      */
     public function log(string $level, $message, $flag = FILE_APPEND)
     {
@@ -119,12 +119,16 @@ class Log
 
         file_put_contents($this->file, $toLog, $flag);
         file_put_contents($this->cache, $num);
+        
+        return $this;
     }
 
     public function clear()
     {
         file_put_contents($this->file, '');
         file_put_contents($this->cache, 0);
+
+        return $this;
     }
 
     public function remove()
@@ -134,6 +138,8 @@ class Log
 
         @rmdir(dirname($this->cache));
         @rmdir(dirname($this->file));
+
+        return $this;
     }
 
     public function setFile($file, $cache = '')
@@ -185,6 +191,8 @@ class Log
 
             file_put_contents($file, $defaultValue);
         }
+        
+        return $this;
     }
 
     public function count()
